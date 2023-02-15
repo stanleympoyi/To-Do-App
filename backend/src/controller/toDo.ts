@@ -71,7 +71,7 @@ export const createToDo: RequestHandler<
   }
 };
 
-export const UpdateToDo: RequestHandler<
+export const updateToDo: RequestHandler<
   UpdateToDoParams,
   unknown,
   UpdateToDoBody,
@@ -105,6 +105,27 @@ export const UpdateToDo: RequestHandler<
     const updatedToDo = await toDo!.save();
 
     res.status(200).json(updatedToDo);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteToDo: RequestHandler = async (req, res, next) => {
+  const toDoId = req.params.toDoId;
+
+  try {
+    if (!mongoose.isValidObjectId(toDoId)) {
+      throw createHttpError(400, "not valid to do ID");
+    }
+
+    const toDo = await ToDoModel.findById(toDoId).exec();
+    if (!toDoId) {
+      throw createHttpError(404, " To do not found");
+    }
+
+    toDo!.remove();
+
+    res.sendStatus(204);
   } catch (error) {
     next(error);
   }

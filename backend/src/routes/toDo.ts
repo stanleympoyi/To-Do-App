@@ -8,6 +8,8 @@ router.get("/:toDoId", ToDoController.getTodo);
 
 router.post("/", ToDoController.createToDo);
 
-router.patch("/:toDoId", ToDoController.UpdateToDo);
+router.patch("/:toDoId", ToDoController.updateToDo);
+
+router.delete("/:toDoId", ToDoController.deleteToDo);
 
 export default router;
